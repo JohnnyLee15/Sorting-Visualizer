@@ -10,8 +10,8 @@
 #define WINDOW_HEIGHT 900
 #define TOP_MARGIN 50
 #define HORIZONTAL_MARGIN 30
-#define FRAME_PER_SWAP 1
-#define FRAME_DELAY_COMPLETED 1
+#define FRAME_PER_SWAP 5
+#define FRAME_DELAY_COMPLETED 2
 
 static Color getColor(int completed, int idx, int swapIdx1, int swapIdx2) {
     Color color;
