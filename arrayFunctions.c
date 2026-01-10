@@ -3,6 +3,7 @@
 #include <limits.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
 
 int* randomIntArray(int size, int min, int max) {
     srand((unsigned) time(NULL));
@@ -36,4 +37,17 @@ int* copyArr(int *arr, int size) {
     }
 
     return copy;
+}
+
+void printArr(int *arr, int size) {
+    printf("[");
+    
+    if (size > 0) {
+        printf("%d", arr[0]);
+        for (int i = 1; i < size; i++) {
+            printf(", %d", arr[i]);
+        }
+    }
+
+    printf("]\n");
 }

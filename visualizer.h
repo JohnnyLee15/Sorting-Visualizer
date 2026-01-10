@@ -1,6 +1,8 @@
 #ifndef VISUALIZE
 #define VISUALIZE
 
-void runVisualizer(int min, int max, int size);
+#include "algoRegistry.h"
+
+void runVisualizer(int min, int max, int size, SortLogger sortAlgo);
 
 #endif

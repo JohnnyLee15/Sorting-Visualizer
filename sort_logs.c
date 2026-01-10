@@ -1,5 +1,4 @@
 #include <stdlib.h>
-#include <stdio.h>
 #include "sort_logs.h"
 #include "arrayFunctions.h"
 
@@ -101,6 +100,35 @@ Swaps* quicksort_log(int *arr, int size) {
     }
 
     quicksort_internal_log(tempArr, 0, size, swaps);
+    free(tempArr);
+    return swaps;
+}
+
+static void bubblesort_internal_log(int *arr, int size, Swaps *swaps) {
+    int i = 0;
+    int swapped = 1;
+    while (i < size - 1 && swapped) {
+        swapped = 0;
+        for (int j = 1; j < size - i; j++) {
+            if (arr[j-1] > arr[j]) {
+                swap(&arr[j], &arr[j-1]);
+                insertSwap(swaps, j, j-1);
+                swapped = 1;
+            }
+        }
+        i++;
+    } 
+}
+
+Swaps* bubblesort_log(int *arr, int size) {
+    Swaps *swaps = createSwaps();
+    int *tempArr = copyArr(arr, size);
+    if (tempArr == NULL || swaps == NULL) {
+        destroySwaps(swaps);
+        return NULL;
+    }
+
+    bubblesort_internal_log(tempArr, size, swaps);
     free(tempArr);
     return swaps;
 }

@@ -3,6 +3,6 @@
 
 int getMax(int *arr, int size);
 int* randomIntArray(int size, int min, int max);
-int* copyArr(int*, int);
-
+int* copyArr(int *arr, int size);
+void printArr(int *arr, int size);
 #endif

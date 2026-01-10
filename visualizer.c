@@ -91,11 +91,22 @@ static void prepFrame(
     }
 }
 
-void runVisualizer(int min, int max, int size) {
+static void cleanUpVisualizer(Swaps *swaps, int *arr) {
+    CloseWindow();
+    free(arr);
+    destroySwaps(swaps);
+}
+
+void runVisualizer(int min, int max, int size, SortLogger sortAlgo) {
     InitWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "Sorting");
 
     int *arr = randomIntArray(size, min, max);
-    Swaps *swaps = quicksort_log(arr, size);
+    Swaps *swaps = sortAlgo(arr, size);
+    if (swaps == NULL) {
+        cleanUpVisualizer(swaps, arr);
+        return;
+    }
+        
     int curr = 0;
     int completed = 0;
     int frames = 0;
@@ -110,8 +121,5 @@ void runVisualizer(int min, int max, int size) {
         prepFrame(arr, &frames, &curr, swaps, &completedFrames, &completed, size);
 
     }
-
-    CloseWindow();
-    free(arr);
-    destroySwaps(swaps);
+    cleanUpVisualizer(swaps, arr);
 }
