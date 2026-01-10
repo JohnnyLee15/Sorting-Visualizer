@@ -17,5 +17,6 @@ void destroySwaps(Swaps*);
 
 Swaps* quicksort_log(int *arr, int size);
 Swaps* bubblesort_log(int *arr, int size);
+Swaps* selectionsort_log(int *arr, int size);
 
 #endif

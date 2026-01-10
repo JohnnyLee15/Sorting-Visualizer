@@ -4,7 +4,7 @@
 
 #define MIN 1
 #define MAX 10000
-#define SIZE 500
+#define SIZE 2000
 
 int main(int argc, char **argv) {
     const char *name = (argc != 2) ? "quicksort" : argv[1]; 

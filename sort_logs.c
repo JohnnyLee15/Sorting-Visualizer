@@ -132,3 +132,33 @@ Swaps* bubblesort_log(int *arr, int size) {
     free(tempArr);
     return swaps;
 }
+
+static void selectionsort_internal_log(int *arr, int size, Swaps *swaps) {
+    for (int end = size - 1; end > 0; end--) {
+        int maxIdx = 0;
+
+        for (int i = 1; i <=end; i++) {
+            if (arr[i] > arr[maxIdx]) {
+                maxIdx = i;
+            }
+        }
+
+        if (maxIdx != end) {
+            swap(&arr[maxIdx], &arr[end]);
+            insertSwap(swaps, maxIdx, end);
+        }
+    }
+}
+
+Swaps* selectionsort_log(int *arr, int size) {
+    Swaps *swaps = createSwaps();
+    int *tempArr = copyArr(arr, size);
+    if (tempArr == NULL || swaps == NULL) {
+        destroySwaps(swaps);
+        return NULL;
+    }
+
+    selectionsort_internal_log(tempArr, size, swaps);
+    free(tempArr);
+    return swaps;
+}

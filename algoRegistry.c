@@ -1,7 +1,7 @@
 #include "algoRegistry.h"
 #include <string.h>
 
-#define NUM_ALGOS 2
+#define NUM_ALGOS 3
 
 typedef struct ALGO_ENTRY {
     const char *name;
@@ -10,7 +10,8 @@ typedef struct ALGO_ENTRY {
 
 static const AlgoEntry ALGORITHMS[] = {
     {"quicksort", quicksort_log},
-    {"bubblesort", bubblesort_log}
+    {"bubblesort", bubblesort_log},
+    {"selectionsort", selectionsort_log}
 };
 
 SortLogger getAlgo(const char *name) {
