@@ -1,22 +1,29 @@
 #ifndef SORT
 #define SORT
 
-typedef struct SWAP {
+typedef enum EVENT_TYPE {
+    COMPARE,
+    SWAP,
+    NONE
+} EventType;
+
+typedef struct EVENT {
     int i;
     int j;
-} Swap;
+    EventType type;
+} Event;
 
-typedef struct SWAPS {
-    Swap *data;
+typedef struct EVENTS {
+    Event *data;
     int size;
     int cap;
-} Swaps;
+} Events;
 
-Swaps* createSwaps();
-void destroySwaps(Swaps*);
+Events* createEvents();
+void destroyEvents(Events*);
 
-Swaps* quicksort_log(int *arr, int size);
-Swaps* bubblesort_log(int *arr, int size);
-Swaps* selectionsort_log(int *arr, int size);
+Events* quicksort_log(int *arr, int size);
+Events* bubblesort_log(int *arr, int size);
+Events* selectionsort_log(int *arr, int size);
 
 #endif

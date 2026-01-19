@@ -4,56 +4,58 @@
 
 #define SWAPS_INIT_SIZE 100
 
-Swaps* createSwaps() {
-    Swaps *newSwaps = malloc(sizeof(Swaps));
-    if (newSwaps != NULL) {
-        newSwaps->size = 0;
-        newSwaps->cap = SWAPS_INIT_SIZE;
-        newSwaps->data = malloc(newSwaps->cap * sizeof(Swap));
+Events* createEvents() {
+    Events *newEvents = malloc(sizeof(Events));
+    if (newEvents != NULL) {
+        newEvents->size = 0;
+        newEvents->cap = SWAPS_INIT_SIZE;
+        newEvents->data = malloc(newEvents->cap * sizeof(Event));
 
-        if (newSwaps->data == NULL) {
-            free(newSwaps);
-            newSwaps = NULL;
+        if (newEvents->data == NULL) {
+            free(newEvents);
+            newEvents = NULL;
         }
     }
 
-    return newSwaps;
+    return newEvents;
 }
 
-void destroySwaps(Swaps *swaps) {
-    if (swaps != NULL) {
-        free(swaps->data);
+void destroyEvents(Events *events) {
+    if (events != NULL) {
+        free(events->data);
     }
-    free(swaps);
+    free(events);
 }
 
-void increaseSwapCap(Swaps *swaps) {
-    if (swaps != NULL) {
-        int newCap = swaps->cap * 2;
-        Swap *newData = malloc(sizeof(Swap) * newCap);
+void increaseEventCap(Events *events) {
+    if (events != NULL) {
+        int newCap = events->cap * 2;
+        Event *newData = malloc(sizeof(Event) * newCap);
         if (newData != NULL) {
-            swaps->cap = newCap;
-            for (int k = 0; k < swaps->size; k++) {
-                newData[k].i = swaps->data[k].i;
-                newData[k].j = swaps->data[k].j;
+            events->cap = newCap;
+            for (int k = 0; k < events->size; k++) {
+                newData[k].i = events->data[k].i;
+                newData[k].j = events->data[k].j;
+                newData[k].type = events->data[k].type;
             }
 
-            free(swaps->data);
-            swaps->data = newData;
+            free(events->data);
+            events->data = newData;
         }
     }
 }
 
-static void insertSwap(Swaps *swaps, int i, int j) {
-    if (swaps != NULL) {
-        if (swaps->size >= swaps->cap) {
-            increaseSwapCap(swaps);
+static void insertEvent(Events *events, int i, int j, EventType type) {
+    if (events != NULL) {
+        if (events->size >= events->cap) {
+            increaseEventCap(events);
         }
 
-        if (swaps->size < swaps->cap) {
-            swaps->data[swaps->size].i = i;
-            swaps->data[swaps->size].j = j;
-            swaps->size++;
+        if (events->size < events->cap) {
+            events->data[events->size].i = i;
+            events->data[events->size].j = j;
+            events->data[events->size].type = type;
+            events->size++;
         }
     }
 }
@@ -64,7 +66,7 @@ static void swap(int *a, int *b) {
     *b = temp;
 }
 
-static void quicksort_internal_log(int *arr, int start, int end, Swaps *swaps) {
+static void quicksort_internal_log(int *arr, int start, int end, Events *events) {
     if (start >= end - 1) 
         return; 
 
@@ -72,10 +74,11 @@ static void quicksort_internal_log(int *arr, int start, int end, Swaps *swaps) {
     int pivot = arr[end - 1];
 
     for (int j = start; j < end - 1; j++) {
+        insertEvent(events, j, end - 1, COMPARE);
         if (arr[j] < pivot) {
             if (i != j) {
                 swap(&arr[i], &arr[j]);
-                insertSwap(swaps, i, j);
+                insertEvent(events, i, j, SWAP);
             }
 
             i++;
@@ -84,35 +87,36 @@ static void quicksort_internal_log(int *arr, int start, int end, Swaps *swaps) {
 
     if (i != end -1) {
         swap(&arr[i], &arr[end-1]);
-        insertSwap(swaps, i, end-1);
+        insertEvent(events, i, end-1, SWAP);
     }
 
-    quicksort_internal_log(arr, start, i, swaps);
-    quicksort_internal_log(arr, i+1, end, swaps);
+    quicksort_internal_log(arr, start, i, events);
+    quicksort_internal_log(arr, i+1, end, events);
 }
 
-Swaps* quicksort_log(int *arr, int size) {
-    Swaps *swaps = createSwaps();
+Events* quicksort_log(int *arr, int size) {
+    Events *events = createEvents();
     int *tempArr = copyArr(arr, size);
-    if (tempArr == NULL || swaps == NULL) {
-        destroySwaps(swaps);
+    if (tempArr == NULL || events == NULL) {
+        destroyEvents(events);
         return NULL;
     }
 
-    quicksort_internal_log(tempArr, 0, size, swaps);
+    quicksort_internal_log(tempArr, 0, size, events);
     free(tempArr);
-    return swaps;
+    return events;
 }
 
-static void bubblesort_internal_log(int *arr, int size, Swaps *swaps) {
+static void bubblesort_internal_log(int *arr, int size, Events *events) {
     int i = 0;
     int swapped = 1;
     while (i < size - 1 && swapped) {
         swapped = 0;
         for (int j = 1; j < size - i; j++) {
+            insertEvent(events, j, j-1, COMPARE);
             if (arr[j-1] > arr[j]) {
                 swap(&arr[j], &arr[j-1]);
-                insertSwap(swaps, j, j-1);
+                insertEvent(events, j, j-1, SWAP);
                 swapped = 1;
             }
         }
@@ -120,24 +124,25 @@ static void bubblesort_internal_log(int *arr, int size, Swaps *swaps) {
     } 
 }
 
-Swaps* bubblesort_log(int *arr, int size) {
-    Swaps *swaps = createSwaps();
+Events* bubblesort_log(int *arr, int size) {
+    Events *events = createEvents();
     int *tempArr = copyArr(arr, size);
-    if (tempArr == NULL || swaps == NULL) {
-        destroySwaps(swaps);
+    if (tempArr == NULL || events == NULL) {
+        destroyEvents(events);
         return NULL;
     }
 
-    bubblesort_internal_log(tempArr, size, swaps);
+    bubblesort_internal_log(tempArr, size, events);
     free(tempArr);
-    return swaps;
+    return events;
 }
 
-static void selectionsort_internal_log(int *arr, int size, Swaps *swaps) {
+static void selectionsort_internal_log(int *arr, int size, Events *events) {
     for (int end = size - 1; end > 0; end--) {
         int maxIdx = 0;
 
         for (int i = 1; i <=end; i++) {
+            insertEvent(events, i, maxIdx, COMPARE);
             if (arr[i] > arr[maxIdx]) {
                 maxIdx = i;
             }
@@ -145,20 +150,20 @@ static void selectionsort_internal_log(int *arr, int size, Swaps *swaps) {
 
         if (maxIdx != end) {
             swap(&arr[maxIdx], &arr[end]);
-            insertSwap(swaps, maxIdx, end);
+            insertEvent(events, maxIdx, end, SWAP);
         }
     }
 }
 
-Swaps* selectionsort_log(int *arr, int size) {
-    Swaps *swaps = createSwaps();
+Events* selectionsort_log(int *arr, int size) {
+    Events *events = createEvents();
     int *tempArr = copyArr(arr, size);
-    if (tempArr == NULL || swaps == NULL) {
-        destroySwaps(swaps);
+    if (tempArr == NULL || events == NULL) {
+        destroyEvents(events);
         return NULL;
     }
 
-    selectionsort_internal_log(tempArr, size, swaps);
+    selectionsort_internal_log(tempArr, size, events);
     free(tempArr);
-    return swaps;
+    return events;
 }

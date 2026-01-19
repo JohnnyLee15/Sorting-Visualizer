@@ -3,8 +3,8 @@
 #include <stdio.h>
 
 #define MIN 1
-#define MAX 10000
-#define SIZE 2000
+#define MAX 1000
+#define SIZE 250
 
 int main(int argc, char **argv) {
     const char *name = (argc != 2) ? "quicksort" : argv[1]; 
