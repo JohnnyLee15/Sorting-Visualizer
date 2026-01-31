@@ -167,3 +167,34 @@ Events* selectionsort_log(int *arr, int size) {
     free(tempArr);
     return events;
 }
+
+static void insertionsort_internal_log(int *arr, int size, Events *events) {
+    for (int i = 1; i < size; i++) {
+        int j = i;
+        while (j > 0 && arr[j - 1] > arr[j]) {
+            insertEvent(events, j - 1, j, COMPARE);
+
+            swap(&arr[j - 1], &arr[j]);
+            insertEvent(events, j - 1, j, SWAP);
+            
+            j--;
+        }
+
+        if (j > 0) {
+            insertEvent(events, j - 1, j, COMPARE);
+        }
+    }
+}
+
+Events* insertionsort_log(int *arr, int size) {
+    Events *events = createEvents();
+    int *tempArr = copyArr(arr, size);
+    if (tempArr == NULL || events == NULL) {
+        destroyEvents(events);
+        return NULL;
+    }
+
+    insertionsort_internal_log(tempArr, size, events);
+    free(tempArr);
+    return events;
+}

@@ -1,12 +1,13 @@
 #include "algoRegistry.h"
 #include <string.h>
 
-#define NUM_ALGOS 3
+#define NUM_ALGOS 4
 
 static const AlgoEntry ALGORITHMS[] = {
     {1, "Quick Sort", quicksort_log},
     {2, "Bubble Sort", bubblesort_log},
-    {3, "Selection Sort", selectionsort_log}
+    {3, "Selection Sort", selectionsort_log},
+    {4, "Insertion Sort", insertionsort_log}
 };
 
 SortLogger getAlgo(int algo) {

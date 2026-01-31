@@ -10,9 +10,10 @@
 #define WINDOW_HEIGHT 900
 #define TOP_MARGIN 50
 #define HORIZONTAL_MARGIN 30
-#define FRAME_PER_SWAP 5
+#define FRAME_PER_SWAP 3
 #define FRAME_PER_COMP 1
-#define FRAME_DELAY_COMPLETED 2
+#define FRAME_DELAY_COMPLETED 1
+#define FPS 500
 
 static Color getColor(
     int completed, 
@@ -133,7 +134,7 @@ static void cleanUpVisualizer(Events *events, int *arr) {
 void runVisualizer(int min, int max, int size, SortLogger sortAlgo) {
     SetTraceLogLevel(LOG_NONE);
     InitWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "Sorting");
-    SetTargetFPS(240);
+    SetTargetFPS(FPS);
 
     int *arr = randomIntArray(size, min, max);
     Events *events = sortAlgo(arr, size);

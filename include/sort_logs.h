@@ -25,5 +25,6 @@ void destroyEvents(Events*);
 Events* quicksort_log(int *arr, int size);
 Events* bubblesort_log(int *arr, int size);
 Events* selectionsort_log(int *arr, int size);
+Events* insertionsort_log(int *arr, int size);
 
 #endif
