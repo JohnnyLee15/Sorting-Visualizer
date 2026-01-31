@@ -131,6 +131,7 @@ static void cleanUpVisualizer(Events *events, int *arr) {
 }
 
 void runVisualizer(int min, int max, int size, SortLogger sortAlgo) {
+    SetTraceLogLevel(LOG_NONE);
     InitWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "Sorting");
     SetTargetFPS(240);
 
