@@ -31,5 +31,3 @@ make clean
 - `src/` – C source files
 - `include/` – Header files
 - `Makefile` – Build configuration
-
-This project is intended for learning and experimentation.
